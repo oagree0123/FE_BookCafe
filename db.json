@@ -1,0 +1,52 @@
+{
+  "moims": [
+    {
+      "id": 1,
+      "moimId": 1,
+      "title": "제목입니다",
+      "contents": "모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용",
+      "personCnt": 6,
+      "nickname": "작성자",
+      "bookTitle": "책 제목",
+      "bookContents": "책 내용",
+      "joinUntil": "모집기한",
+      "imageUrl": "http://image.kyobobook.co.kr/images/book/xlarge/239/x9791158392239.jpg",
+      "bookUrl": "",
+      "moimMember": [
+        "abc",
+        "nickname"
+      ],
+      "createdAt": "2022-03-01",
+      "modifiedAt": "2022-03-01"
+    },
+    {
+      "id": 2,
+      "moimId": 2,
+      "title": "제목입니다2",
+      "contents": "모집내용2모집내용2모집내용2모집내용2모집내용2모집내용2모집내용2모집내용2모집내용2모집내용2",
+      "nickname": "작성자 닉네임2",
+      "personCnt": 6,
+      "bookTitle": "책 제목2",
+      "bookContents": "책 내용2",
+      "joinUntil": "모집기한2",
+      "imageUrl": "http://image.kyobobook.co.kr/images/book/xlarge/239/x9791158392239.jpg",
+      "bookUrl": "http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&linkClass=&barcode=9791158392239",
+      "moimMember": [
+        "abc",
+        "nickname"
+      ],
+      "createdAt": "2022-03-01",
+      "modifiedAt": "2022-03-01"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
