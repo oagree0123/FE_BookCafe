@@ -46,7 +46,7 @@ const Input = (props) => {
             }
            />
         ) : (
-          <ElInput center={center} margin={margin} width={width} type={type} placeholder={placeholder} onChange={_onChange}/>
+          <ElInput center={center} margin={margin} width={width} type={type} placeholder={placeholder} onChange={_onChange} value={value}/>
         )}
     </>
   );

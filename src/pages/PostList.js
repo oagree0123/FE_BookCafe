@@ -55,7 +55,7 @@ const Box = styled.div`
 
 const PostListWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
   gap: 20px;
 `

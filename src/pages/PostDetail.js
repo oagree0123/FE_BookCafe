@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {actionCreators as postActions} from "../redux/modules/post"
-import Detail from '../Detail';
+import Detail from '../components/Detail';
+import CommentList from '../components/CommentList';
+import CommentWrite from '../components/CommentWrite';
 
 const PostDetail = (props) => {
   const dispatch = useDispatch();
@@ -11,7 +13,7 @@ const PostDetail = (props) => {
   const id = props.match.params.id;
 
   const post_list = useSelector(store => store.post.list);
-  const post_idx = post_list.findIndex(p => p.id === parseInt(id));
+  const post_idx = post_list.findIndex(p => p.moimId === parseInt(id));
 
   console.log(id, post_list)
 
@@ -31,10 +33,19 @@ const PostDetail = (props) => {
           {...post}
         />
       }
-      {/* <CommentWrite post_id={id}/>
-      <CommentList post_id={id}/> */}
+      <CommentWrap>
+        <CommentWrite post_id={id}/>
+        <CommentList post_id={id}/> 
+      </CommentWrap>
     </>
   );
 };
+
+const CommentWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default PostDetail;

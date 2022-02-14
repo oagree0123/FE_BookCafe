@@ -10,10 +10,10 @@ const Deadline = (props) => {
     <SelectWrap>
       <Text margin="0px 12px 0px 0px">마감 일자</Text>
       <ElSelect onChange={_onChange}>
-        <option>1주일 후</option>
-        <option>2주일 후</option>
-        <option>3주일 후</option>
-        <option>4주일 후</option>
+        <option value={7}>1주일 후</option>
+        <option value={14}>2주일 후</option>
+        <option value={21}>3주일 후</option>
+        <option value={28}>4주일 후</option>
       </ElSelect>
     </SelectWrap>
   );

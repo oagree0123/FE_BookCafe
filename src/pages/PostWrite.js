@@ -1,42 +1,76 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import { Grid, Text, WriteInput, Button, Image } from '../elements';
 import Deadline from '../components/Deadline';
 import WriteSelect from '../components/WriteSelect';
 import Upload from '../shared/Upload';
 import { actionCreators as postActions } from '../redux/modules/post';
+import { actionCreators as imageActions } from '../redux/modules/image';
 
 const PostWrite = (props) => {
   const {history} = props;
   const dispatch = useDispatch();
 
   const preview = useSelector((state) => state.image.preview);
+  const post_list = useSelector((state) => state.post.list);
 
-  const [moim_name, setMoimName] = useState("");
-  const [book_name, setBookName] = useState("");
-  const [book_url, setBookUrl] = useState("");
-  const [book_content, setBookContent] = useState("");
-  const [content, setContent] = useState("");
+  const post_id = props.match.params.id;
+  const is_edit = post_id ? true : false;
+
+  let _post = is_edit ? post_list.find((p) => parseInt(p.moimId) === parseInt(post_id)) : null;
+
+  const [moim_name, setMoimName] = useState(_post ? _post.title : "");
+  const [book_name, setBookName] = useState(_post ? _post.bookTitle : "");
+  const [book_url, setBookUrl] = useState(_post ? _post.bookUrl :"");
+  const [book_content, setBookContent] = useState(_post ? _post.bookContents :"");
+  const [content, setContent] = useState(_post ? _post.contents :"");
   const [person_cnt, setPersonCnt] = useState(1);
-  const [deadline, setDeadline] = useState("1주일 후");
+  const [deadline, setDeadline] = useState(moment().add('7',"d").format("YYYY-MM-DD"));
 
   const writePost = () => {
-    
     const moims_data = {
       title: moim_name,
+      contents: content,
       nickname: "닉네임",
+      personCnt: person_cnt,
       bookTitle: book_name,
       bookContents: book_content,
+      joinUntil: deadline,
       bookUrl: book_url,
-      contents: content,
-      personCnt: person_cnt,
-      joinUntill: deadline,
     }
 
     dispatch(postActions.addPostDB(moims_data));
   }
+
+  const editPost = () => {
+    const moims_data = {
+      title: moim_name,
+      contents: content,
+      nickname: "닉네임",
+      personCnt: person_cnt,
+      bookTitle: book_name,
+      bookContents: book_content,
+      joinUntil: deadline,
+      bookUrl: book_url,
+      imageUrl: preview,
+    }
+
+    dispatch(postActions.editPostDB(post_id, moims_data));
+  }
+
+  useEffect(() => {
+    if(is_edit && !_post) {
+      history.goBack();
+      return;
+    }
+
+    if(is_edit) {
+      dispatch(imageActions.setPreview(_post.imageUrl));
+    }
+  }, [])
 
   return (
     <PostWriteWrap>
@@ -85,9 +119,11 @@ const PostWrite = (props) => {
       <PostContentWrap >
         <Text margin="0px 0px 12px 0px" size="22px" bold>모집 내용</Text>
         <SelectWrap>
-          <Deadline _onChange={(e) => {
-            setDeadline(e.target.value);
-            console.log(e.target.value);
+          <Deadline _onChange={(e) => { 
+            let addDate = e.target.value
+            let new_Date = moment().add(`${addDate}`,"d").format("YYYY-MM-DD")
+            setDeadline(new_Date);
+            console.log(moment().add(`${addDate}`,"d").format("YYYY-MM-DD")); 
           }} />
           <WriteSelect _onChange={(e) => {
             setPersonCnt(e.target.value);
@@ -104,13 +140,22 @@ const PostWrite = (props) => {
         />
       </PostContentWrap>
       <PostButtonWrap>
-        <Button
-          width="20%"
-          margin="0px 12px 0px 0px"
-          _onClick={writePost}
-        >
-          게시물 작성
-        </Button>
+        {is_edit ?
+          <Button
+            width="20%"
+            margin="0px 12px 0px 0px"
+            _onClick={editPost}
+          >
+            수정 하기
+          </Button>
+          :<Button
+            width="20%"
+            margin="0px 12px 0px 0px"
+            _onClick={writePost}
+          >
+            작성 하기
+          </Button>
+        }
         <Button
           width="20%"
           _onClick={() => {

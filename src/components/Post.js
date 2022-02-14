@@ -8,7 +8,7 @@ const Post = (props) => {
   return (
     <PostWrap
       onClick={() => {
-        history.push(`/post/${props.id}`);
+        history.push(`/post/${props.moimId}`);
       }}
     >
       <ImageWrap >
@@ -43,9 +43,12 @@ const PostWrap = styled.div`
 `;
 
 const ImageWrap = styled.div` 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 224px;
   overflow: hidden;
-  background-color: rgba(255, 138, 0, 0.23);
+/*   background-color: rgba(255, 138, 0, 0.23); */
   margin: 0 auto;
 `;
 

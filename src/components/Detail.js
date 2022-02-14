@@ -1,13 +1,17 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import moment from 'moment';
 
-import { Text, Image, Button } from './elements';
-import { actionCreators as postActions } from './redux/modules/post';
+import { history } from '../redux/configStore';
+import { Text, Image, Button } from '../elements';
+import { actionCreators as postActions } from '../redux/modules/post';
 
 const Detail = (props) => {
-  const {history} = props;
   const dispatch = useDispatch();
+
+  const deadline = moment(props.joinUntil).diff(moment(), "days");
+  console.log(deadline);
 
   return (
     <>
@@ -16,12 +20,20 @@ const Detail = (props) => {
           <TitleWrap>
             <Text size="30px" bold>{props.title}</Text>
             <TitleBtnWrap>
-              <Button bg="#fff" fcolor="#000">수정</Button>
+              <Button 
+                bg="#fff" 
+                fcolor="#000"
+                _onClick={() => {
+                  history.push(`/write/${props.moimId}`);
+                }}
+              >
+                수정
+              </Button>
               <Button 
                 bg="#fff" 
                 fcolor="#000"
                 _onClick={()=>{
-                  dispatch(postActions.deletePostDB(props.id));
+                  dispatch(postActions.deletePostDB(props.moimId));
                 }}
               >
                 삭제
@@ -53,7 +65,7 @@ const Detail = (props) => {
             </Text>
           </BIWrapMid>
           <BIWrapBottom>
-            <Text size="18px">D-24</Text>
+            <Text size="22px" bold>D-{deadline}</Text>
             <Button bg="#c9c9c9" width="80%">참여 하기</Button>
           </BIWrapBottom>
         </BookInfoWrap>
@@ -69,7 +81,7 @@ const PostDetailWrap = styled.div`
   max-width: 1140px;
   box-sizing: border-box;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
 `;
 
@@ -107,8 +119,8 @@ const ContentWrap = styled.div`
 `;
 
 const PostContentWrap = styled.div`
-  margin-right: 52px;
   width: calc(100% - 380px);
+  min-width: 400px;
 `;
 
 const BookInfoWrap = styled.div`
@@ -117,6 +129,7 @@ const BookInfoWrap = styled.div`
   padding: 18px 28px;
   /* width: 380px; */
   width: calc(100% - 680px);
+  min-width: 250px;
   height: 422px;
   border: 1px solid #c9c9c9;
   border-radius: 20px;

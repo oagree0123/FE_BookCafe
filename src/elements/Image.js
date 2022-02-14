@@ -26,11 +26,12 @@ Image.defaultProps = {
 const AspectInner = styled.img`
   width: ${(props) => (props.width)};
   margin: ${(props) => (props.margin)};
+  min-height: 180px;
   max-height: 224px;
   display: block;
   position: relative;
   overflow: hidden;
-  object-fit: fill;
+  object-fit: cover;
 `;
 
 export default Image;

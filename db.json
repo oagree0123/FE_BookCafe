@@ -1,25 +1,6 @@
 {
   "moims": [
     {
-      "id": 1,
-      "moimId": 1,
-      "title": "제목입니다",
-      "contents": "모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용모집내용",
-      "personCnt": 6,
-      "nickname": "작성자",
-      "bookTitle": "책 제목",
-      "bookContents": "책 내용",
-      "joinUntil": "모집기한",
-      "imageUrl": "http://image.kyobobook.co.kr/images/book/xlarge/239/x9791158392239.jpg",
-      "bookUrl": "",
-      "moimMember": [
-        "abc",
-        "nickname"
-      ],
-      "createdAt": "2022-03-01",
-      "modifiedAt": "2022-03-01"
-    },
-    {
       "id": 2,
       "moimId": 2,
       "title": "제목입니다2",
@@ -37,13 +18,33 @@
       ],
       "createdAt": "2022-03-01",
       "modifiedAt": "2022-03-01"
+    },
+    {
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/bookcafe-stora.appspot.com/o/images%2Fmoims_1644797465155?alt=media&token=f0da3612-20a8-496f-813f-7ae2b6220641",
+      "joinMember": [],
+      "title": "ads",
+      "nickname": "닉네임",
+      "bookTitle": "das",
+      "bookContents": "asd",
+      "bookUrl": "",
+      "contents": "asdasd",
+      "personCnt": 1,
+      "joinUntill": "1주일 후",
+      "id": 3
     }
   ],
   "comments": [
     {
       "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "commentId": 1,
+      "nickname": "nickname1",
+      "comment": "나도 반가워요"
+    },
+    {
+      "id": 2,
+      "commentId": 2,
+      "nickname": "nickname2",
+      "comment": "거짓말이에요"
     }
   ],
   "profile": {
