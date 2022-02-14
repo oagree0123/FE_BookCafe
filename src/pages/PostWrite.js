@@ -12,7 +12,6 @@ import { actionCreators as imageActions } from '../redux/modules/image';
 
 const PostWrite = (props) => {
   const {history} = props;
-  let hello;
   const dispatch = useDispatch();
 
   const preview = useSelector((state) => state.image.preview);

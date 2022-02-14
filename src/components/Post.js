@@ -22,7 +22,7 @@ const Post = (props) => {
       <ContentWrap>
         <Text size="14px" margin="0px 0px 14px 0px">{props.bookTitle}</Text>
         <Text size="11px" margin="0px 0px 2px 0px" color="#828282">{props.nickname}</Text>
-        <Text size="18px" margin="0px 0px 12px 0px">{props.title}</Text>
+        <Text size="16px" margin="0px 0px 12px 0px">{props.title}</Text>
         <TextEpllipsis ellipsis>{props.contents}</TextEpllipsis>
       </ContentWrap>
     </PostWrap> 

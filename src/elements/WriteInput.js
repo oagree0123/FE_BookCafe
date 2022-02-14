@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Text, Grid } from './index';
 
-const Input = (props) => {
+const WriteInput = (props) => {
   const { label, placeholder, _onChange, type, multiLine, value, is_submit, onSubmit, width, margin, size, rows, center } = props;
 
   const styles = {
@@ -52,7 +52,7 @@ const Input = (props) => {
   );
 };
 
-Input.defaultProps = {
+WriteInput.defaultProps = {
   multiLine: false,
   label: false,
   placeholder: '텍스트를 입력해주세요.',
@@ -88,4 +88,4 @@ const ElInput = styled.input`
   ${(props) => props.center ? "text-align: center;" : ""}
 `;
 
-export default Input;
+export default WriteInput;

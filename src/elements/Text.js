@@ -67,6 +67,7 @@ const P = styled.p`
   ${(props) => (props.center? `text-align: center;` : '')}
   ${(props) => (props.is_cursor? `cursor: pointer;` : '')}
   ${(props) => (props.is_width? `width: ${props.is_width};` : '')}
+  ${(props) => (props.is_cursor? `cursor: pointer;` : '')}
 `;
 
 export default Text;

@@ -38,13 +38,15 @@
       "id": 1,
       "commentId": 1,
       "nickname": "nickname1",
-      "comment": "나도 반가워요"
+      "comment": "나도 반가워요",
+      "createdAt": "2022-02-17"
     },
     {
       "id": 2,
       "commentId": 2,
       "nickname": "nickname2",
-      "comment": "거짓말이에요"
+      "comment": "거짓말이에요",
+      "createdAt": "2022-02-17"
     }
   ],
   "profile": {

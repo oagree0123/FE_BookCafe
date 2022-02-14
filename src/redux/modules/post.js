@@ -77,7 +77,7 @@ const addPostDB = (moims_data) => {
         const _moims_data =  {imageUrl: url, ...moims_data}
         console.log(_moims_data);
 
-        axios.post(`http://yuseon.shop/moims`,{..._moims_data})
+        axios.post(`http://yuseon.shop/moims`, {..._moims_data})
         .then((res) => {
           console.log(res.data);
           /* dispatch(addPost({id: res.data.id, moimId: res.data.id, ..._moims_data})) */

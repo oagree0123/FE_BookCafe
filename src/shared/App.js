@@ -1,4 +1,5 @@
 import './App.css';
+import styled from 'styled-components';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route } from 'react-router-dom';
 import { history } from '../redux/configStore';
@@ -8,7 +9,8 @@ import PostList from '../pages/PostList';
 import PostDetail from '../pages/PostDetail';
 import Header from '../components/Header';
 import PostWrite from '../pages/PostWrite';
-import styled from 'styled-components';
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
       <ContentWrap>
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList} />           
+          <Route path="/login" exact component={Login} />           
+          <Route path="/signup" exact component={Signup} />           
           <Route path="/write" exact component={PostWrite} />           
           <Route path="/write/:id" exact component={PostWrite} />           
           <Route path="/post/:id" exact component={PostDetail} />           
