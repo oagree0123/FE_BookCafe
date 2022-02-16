@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -10,8 +10,44 @@ import { actionCreators as postActions } from '../redux/modules/post';
 const Detail = (props) => {
   const dispatch = useDispatch();
 
+  const user_info = useSelector(state => state.user.userInfo);
+  const is_login = useSelector(state => state.user.isLogin);
+
   const deadline = moment(props.joinUntil).diff(moment(), "days");
-  console.log(deadline);
+
+  const [endJoin, setEndJoin] = useState(false);
+
+  const joinClick = () => {
+    if(!is_login) {
+      window.alert("로그인후 이용 가능합니다!");
+      return ;
+    }
+
+    if(props.moimMembers.length === parseInt(props.personCnt)) {
+      window.alert("더이상 참여할 수 없습니다!");
+      return ;
+    }
+
+    dispatch(postActions.joinMoimDB(props.moimId, user_info.nickname));
+  }
+
+  const unjoinClick = () => {
+    if(!is_login) {
+      window.alert("로그인후 이용 가능합니다!");
+      return ;
+    }
+
+    dispatch(postActions.unjoinMoimDB(props.moimId, user_info.nickname));
+  }
+
+  /* useEffect(() => {
+    if(props.moimMembers.length === parseInt(props.personCnt)){
+      setEndJoin(true);
+    }
+    else {
+      setEndJoin(false);
+    }
+  }, [endJoin]) */
 
   return (
     <>
@@ -61,17 +97,38 @@ const Detail = (props) => {
           </BIWrapTop>
           <BIWrapMid>
             <Text>
-              모집인원 : {props.moimMember?.length ? props.moimMember.length : 0} / {props.personCnt}
+              모집인원 : {props.moimMembers.length ? props.moimMembers.length : 0} / {props.personCnt}
             </Text>
           </BIWrapMid>
           <BIWrapBottom>
             <Text size="22px" bold>D-{deadline}</Text>
-            <Button bg="#c9c9c9" width="80%">참여 하기</Button>
+            {
+              (endJoin) ?
+              <Button 
+                bg="#c9c9c9" width="80%"
+                _onClick={() => {
+                  window.alert("모집이 완료되었습니다!")
+                }}
+              >
+                모집 완료
+              </Button> :
+                props.moimMembers.includes(user_info?.nickname) ?
+                <Button 
+                  bg="#c9c9c9" width="80%"
+                  _onClick={unjoinClick}
+                >
+                  참여 취소
+                </Button>:
+                <Button 
+                  bg="skyblue" width="80%"
+                  _onClick={joinClick}
+                >
+                  참여 하기
+                </Button>
+              }
           </BIWrapBottom>
         </BookInfoWrap>
       </PostDetailWrap>
-      {/* <CommentWrite post_id={id}/>
-      <CommentList post_id={id}/> */}
     </>
   );
 };
@@ -130,7 +187,7 @@ const BookInfoWrap = styled.div`
   /* width: 380px; */
   width: calc(100% - 680px);
   min-width: 250px;
-  height: 422px;
+  height: auto;
   border: 1px solid #c9c9c9;
   border-radius: 20px;
   overflow: hidden;

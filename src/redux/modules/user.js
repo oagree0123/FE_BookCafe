@@ -3,10 +3,8 @@ import { produce } from "immer";
 import axios from 'axios'
 
 import { setToken } from "../../shared/token";
-import apis from "../../shared/apis";
+import { setCookie, deleteCookie } from "../../shared/Cookie";
 
-import Login from "../../pages/Login";
-import instance from "../../shared/apis"
 
 // actions
 const LOG_OUT = "LOG_OUT";
@@ -14,80 +12,104 @@ const GET_USER = "GET_USER";
 const SET_USER = "SET_USER";
 
 // action creators
-const logOut = createAction(LOG_OUT, () => ({  }));
-const getUser = createAction(GET_USER, () => ({  }));
 const setUser = createAction(SET_USER, (user) => ({ user }));
+const getUser = createAction(GET_USER, () => ({  }));
+const logOut = createAction(LOG_OUT, () => ({  }));
 
 // initialState
 const initialState = {
   userInfo: {
-    userUid: "",
-    userNickname: "",
+    username: "",
+    nickname: "",
   },
   isLogin: false,
-  // user: null,
-  // username: "",
 };
 
-// middleware actions
-// const loginAction = (user) => {
-//   return function (dispatch, getState, { history }) {
-//     console.log(history);
-//     dispatch(setUser(user));
-//     history.push("/");
-//   }
-// };
+const loginCheckDB = () => {
+  const token = sessionStorage.getItem("token");
+  return function (dispatch, getState, {history}) {
+    axios({ 
+      method: "post", 
+      url: "http://yuseon.shop/islogin", 
+      headers: { 
+        "content-type": "applicaton/json;charset=UTF-8", 
+        "accept": "application/json", 
+        "Authorization": `${token}`, 
+      }, 
+    })
+    .then((res) => {
+      console.log(res);
+      dispatch(setUser(
+        {
+          username: res.data.username,
+          nickname: res.data.nickname
+        })
+      );
+    })
+    .catch((err) => {
+      console.log("로그인 확인 실패", err)
+    })
+  }
+}
 
-// 로그인
-
-const LoginDB = (username, password, user_name) => {
+const loginDB = (username, password) => {
   return function (dispatch, getState, { history }) {
     axios
-    .post('http://13.124.130.158/user/login',{
+    /* .post('http://yuseon.shop/user/login',{ */
+    .post('http://yuseon.shop/user/login',{
       username: username,
-      // nickname: user_name ,
       password: password,
     })
+    .then((res) => {
+      const token_res = res.headers.authorization;
+      setToken(token_res);
+      
+      return token_res
+    })
+    .then((token_res) =>{
+      console.log("넘어온토큰", token_res)
+      axios({ 
+        method: "post", 
+        url: "http://yuseon.shop/islogin", 
+        headers: { 
+          "content-type": "applicaton/json;charset=UTF-8", 
+          "accept": "application/json", 
+          "Authorization": `${token_res}`, 
+        }, 
+      })
       .then((res) => {
-        const USER_TOKEN = res.data.token;
-
-        sessionStorage.setItem("X-AUTH-TOKEN", USER_TOKEN);
-        dispatch(
-          setUser({
-            userUid: res.data.userUid,
-            userNickname: res.data.userNickname,
+        console.log(res);
+        dispatch(setUser(
+          {
+            username: res.data.username,
+            nickname: res.data.nickname
           })
         );
       })
-      .then(() => {
-        window.alert("성공적으로 로그인되었습니다!");
-        history.push("/");
+      .catch((err) => {
+        console.log("로그인 확인 실패", err)
       })
-      .catch(() => window.alert("로그인 정보가 존재하지 않습니다!"));
+      history.replace('/')
+    })
   };
 };
-    
 
-const SignUpDB = (id, pwd, user_name) => {
+const signUpDB = (id, pwd, user_name) => {
   return function (dispatch, getState, {history}){
     axios
-    .post('http://13.124.130.158/user/signup',{
+    /* .post('http://yuseon.shop/user/signup',{ */
+    .post('http://yuseon.shop/user/signup',{
       "username": id,
       "nickname": user_name ,
       "password": pwd,
     })
     .then((res) => {
-      if (res.data === "성공적으로 회원 가입이 완료 되었습니다.") {
-        window.alert(res.data)
-        history.push("/");
-        return;
-      }
-      window.alert(res.data)
+      window.alert("회원가입이 완료되었습니다!");
+      history.replace('/');
     })
     .catch((error) => {
       console.log(error);
     })
-    
   }
 }
 
@@ -95,14 +117,17 @@ export default handleActions(
   {
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
+        setCookie("is_login", "success");
         draft.userInfo = action.payload.user;
         draft.isLogin = true;
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
+        sessionStorage.removeItem("token");
+        deleteCookie("is_login");
         draft.userInfo = {
-          userNickname: "",
-          userUid: "",
+          username: "",
+          nickname: "",
         };
         draft.isLogin = false;
       }),
@@ -115,10 +140,9 @@ export default handleActions(
 const actionCreators = {
   logOut,
   getUser,
-  // loginAction,
-  // signupFB,
-  SignUpDB,
-  LoginDB,
+  signUpDB,
+  loginDB,
+  loginCheckDB,
 };
 
 export { actionCreators };

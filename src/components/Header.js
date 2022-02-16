@@ -1,10 +1,17 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { Grid, Text, Button } from '../elements'
+import { Text, Button } from '../elements'
 import { history } from '../redux/configStore';
+import { actionCreators as userActions } from '../redux/modules/user';
+import { getCookie } from '../shared/Cookie';
 
 const Header = (props) => {
+  const dispatch = useDispatch();
+
+  const is_login = useSelector(state => state.user.isLogin);
+
   return (
     <HeaderWrap>
       <Text 
@@ -16,25 +23,39 @@ const Header = (props) => {
       >
         북카페
       </Text>
+      
+      {!is_login ? 
+        <ButtonWrap>
+          <Button 
+            text-size="16px" 
+            _onClick={() => {
+              history.replace('/login')
+            }}
+          >
+            로그인
+          </Button>
+          <Button 
+            text-size="16px"
+            _onClick={() => {
+              history.replace('/signup')
+            }} 
+          >
+            회원가입
+          </Button>
+        </ButtonWrap> :
 
-      <ButtonWrap>
-        <Button 
-          text-size="16px" 
-          _onClick={() => {
-            history.replace('/login')
-          }}
-        >
-          로그인
-        </Button>
-        <Button 
-          text-size="16px"
-          _onClick={() => {
-            history.replace('/signup')
-          }} 
-        >
-          회원가입
-        </Button>
-      </ButtonWrap>
+        <ButtonWrap>
+          <Button 
+            text-size="16px" 
+            _onClick={() => {
+              dispatch(userActions.logOut());
+              history.replace('/')
+            }}
+          >
+            로그아웃
+          </Button>
+        </ButtonWrap>
+      }
     </HeaderWrap>
   );
 };

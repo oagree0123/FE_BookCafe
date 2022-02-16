@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { Input, Button, WriteInput } from '../elements';
+import { actionCreators as commentActions } from '../redux/modules/comment';
 
-const CommentWrite = () => {
+const CommentWrite = (props) => {
+  const dispatch = useDispatch();
+
+  const [comment, setComment] = useState("");
+
+  const writeComment = () => {
+    dispatch(commentActions.addCommentDB(props.post_id, comment));
+  }
+
   return (
     <>
       <WriteWrap>
-        <CommentInput placeholder="댓글을 입력해주세요!" />
-        <Button width="80px">작성</Button>
+        <CommentInput 
+          placeholder="댓글을 입력해주세요!" 
+          value={comment}
+          onChange={(e) => {
+            setComment(e.target.value);
+          }}
+        />
+        <Button 
+          width="80px"
+          _onClick={writeComment}
+        >
+          작성
+        </Button>
       </WriteWrap>
     </>
   );

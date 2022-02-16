@@ -1,15 +1,44 @@
-import React, { useState } from 'react';
+import React, { useDebugValue, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import UserInput from '../components/UserInput';
 
 import { Text, Button, } from '../elements';
+import { actionCreators as userActions } from '../redux/modules/user';
+import { idCheck, usernameCheck } from '../shared/common';
 
-const Signup = () => {
+const Signup = (props) => {
+  const {history} = props;
+  const dispatch = useDispatch();
 
   const [id, setId] = useState("");
   const [nickname, setNickname] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwd_check, setPwdCheck] = useState("");
+
+  const signup = () => {
+    if(id === "" || pwd === "" || nickname === "" || pwd_check === "") {
+      window.alert("모두 입력해주세요!");
+      return;
+    }
+
+    if(!idCheck(id)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
+      return;
+    }
+
+    if(!usernameCheck(nickname)) {
+      window.alert("닉네임에는 기호가 없어야 합니다!");
+      return;
+    }
+
+    if(pwd !== pwd_check) {
+      window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!")
+      return;
+    }
+
+    dispatch(userActions.signUpDB(id, pwd, nickname));
+  }
 
   return (
     <SignupWrap>
@@ -41,6 +70,7 @@ const Signup = () => {
           placeholder="패스워드를 입력해주세요!" 
           margin="0px 0px 24px 0px" 
           value={pwd}
+          type="password"
         />
         <Text margin="0px 0px 8px 0px">패스워드 확인</Text>
         <UserInput 
@@ -50,18 +80,31 @@ const Signup = () => {
           placeholder="패스워드를 똑같이 입력해주세요!" 
           margin="0px 0px 24px 0px" 
           value={pwd_check}
+          type="password"
         />
       </ContentWrap>
       <ButtonWrap>
-        <Button width="48%">회원가입</Button>
-        <Button width="48%">취소</Button>
+        <Button 
+          width="48%"
+          _onClick={signup}
+        >
+          회원가입
+        </Button>
+        <Button 
+          width="48%"
+          _onClick={()=>{
+            history.push('/');
+          }}
+        >
+          취소
+        </Button>
       </ButtonWrap>
     </SignupWrap>
   );
 };
 
 const SignupWrap = styled.div`
-  width: calc(100% - 520px);
+  width: calc(90% - 400px);
   padding: 80px 40px;
   margin: 0 auto;
   text-align: center;

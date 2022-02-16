@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route } from 'react-router-dom';
 import { history } from '../redux/configStore';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '../elements';
 import PostList from '../pages/PostList';
@@ -11,8 +13,21 @@ import Header from '../components/Header';
 import PostWrite from '../pages/PostWrite';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
+import { actionCreators as userActions } from '../redux/modules/user';
+
+import jwt_decode from "jwt-decode";
 
 function App() {
+  const dispatch = useDispatch();
+
+  const is_session = sessionStorage.getItem('token');
+
+  useEffect(() => {
+    if(is_session) {
+      dispatch(userActions.loginCheckDB());
+    }
+  }, [])
+
   return (
     <>
       <AppWrap>

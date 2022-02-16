@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Grid, Button } from '../elements';
 import Post from '../components/Post';
 import { actionCreators as postActions } from '../redux/modules/post';
+import Permit from '../shared/Permit';
 
 const PostList = (props) => {
   const {history} = props
@@ -30,12 +31,14 @@ const PostList = (props) => {
             />
           );
         })}
-        <Button 
-          is_float 
-          _onClick={() => {
-            history.push("/write")
-          }}
-        >+</Button>
+        <Permit>
+          <Button 
+            is_float 
+            _onClick={() => {
+              history.push("/write")
+            }}
+          >+</Button>
+        </Permit>      
       </PostListWrap> 
     </>
   );

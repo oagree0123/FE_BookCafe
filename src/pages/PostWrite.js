@@ -10,12 +10,19 @@ import Upload from '../shared/Upload';
 import { actionCreators as postActions } from '../redux/modules/post';
 import { actionCreators as imageActions } from '../redux/modules/image';
 
+import jwt_decode from "jwt-decode";
+
 const PostWrite = (props) => {
   const {history} = props;
   const dispatch = useDispatch();
 
+  const is_session = sessionStorage.getItem('token');
+
+  let decoded = jwt_decode(is_session);
+
   const preview = useSelector((state) => state.image.preview);
   const post_list = useSelector((state) => state.post.list);
+  const user = useSelector((state) => state.user.userInfo);
 
   const post_id = props.match.params.id;
   const is_edit = post_id ? true : false;
@@ -34,15 +41,17 @@ const PostWrite = (props) => {
     const moims_data = {
       title: moim_name,
       contents: content,
-      nickname: "닉네임",
+      nickname: user.nickname,
       personCnt: person_cnt,
       bookTitle: book_name,
       bookContents: book_content,
       joinUntil: deadline,
       bookUrl: book_url,
+      moimMembers: [],
     }
 
     dispatch(postActions.addPostDB(moims_data));
+    history.replace('/');
   }
 
   const editPost = () => {
@@ -59,6 +68,7 @@ const PostWrite = (props) => {
     }
 
     dispatch(postActions.editPostDB(post_id, moims_data));
+    history.replace('/');
   }
 
   useEffect(() => {

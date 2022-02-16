@@ -20,10 +20,10 @@ const Post = (props) => {
         {props.moimMember ? props.moimMember.length : 0 } / {props.personCnt}
       </Text> */}
       <ContentWrap>
-        <Text size="14px" margin="0px 0px 14px 0px">{props.bookTitle}</Text>
+        <BookEpllipsis>{props.bookTitle}</BookEpllipsis>
         <Text size="11px" margin="0px 0px 2px 0px" color="#828282">{props.nickname}</Text>
-        <Text size="16px" margin="0px 0px 12px 0px">{props.title}</Text>
-        <TextEpllipsis ellipsis>{props.contents}</TextEpllipsis>
+        <TitleEpllipsis>{props.title}</TitleEpllipsis>
+        <TextEpllipsis>{props.contents}</TextEpllipsis>
       </ContentWrap>
     </PostWrap> 
   );
@@ -58,6 +58,28 @@ const ContentWrap =styled.div`
   padding: 12px 12px 16px 12px;
   min-height: 156px;
   box-sizing: border-box;
+`;
+
+const BookEpllipsis = styled.p`
+  margin: 0px 0px 14px 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap:break-word; 
+  font-size: 14px;
+`;
+
+const TitleEpllipsis = styled.p`
+  margin: 6px 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap:break-word; 
+  font-size: 14px;
 `;
 
 const TextEpllipsis = styled.p`
