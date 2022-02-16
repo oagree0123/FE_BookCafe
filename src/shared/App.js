@@ -16,6 +16,7 @@ import Signup from '../pages/Signup';
 import { actionCreators as userActions } from '../redux/modules/user';
 
 import jwt_decode from "jwt-decode";
+import Mypage from '../pages/Mypage';
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function App() {
           <Route path="/write" exact component={PostWrite} />           
           <Route path="/write/:id" exact component={PostWrite} />           
           <Route path="/post/:id" exact component={PostDetail} />           
+          <Route path="/user/:nickname" exact component={Mypage} />           
         </ConnectedRouter>
       </ContentWrap>
     </>
