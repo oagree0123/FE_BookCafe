@@ -15,6 +15,7 @@ const Detail = (props) => {
 
   const deadline = moment(props.joinUntil).diff(moment(), "days");
 
+  const [joinCount, setJoinCount] = useState(props.moimMembers.length);
   const [endJoin, setEndJoin] = useState(false);
 
   const joinClick = () => {
@@ -41,17 +42,13 @@ const Detail = (props) => {
   }
 
   useEffect(() => {
-    if(props.moimMembers.length === parseInt(props.personCnt)){
+    if(joinCount === parseInt(props.personCnt)){
       setEndJoin(true);
     }
     else {
       setEndJoin(false);
     }
-
-    if(props.moimMembers.length === parseInt(props.personCnt)){
-    }
-
-  }, [endJoin])
+  }, [joinCount])
 
   return (
     <>
@@ -75,7 +72,9 @@ const Detail = (props) => {
                   bg="#fff" 
                   fcolor="#000"
                   _onClick={()=>{
-                    dispatch(postActions.deletePostDB(props.moimId));
+                    if (window.confirm("정말 삭제하시겠습니까?")) {
+                      dispatch(postActions.deletePostDB(props.moimId));
+                    }
                   }}
                 >
                   삭제
@@ -137,7 +136,10 @@ const Detail = (props) => {
                 props.moimMembers.includes(user_info?.nickname) ?
                 <Button 
                   bg="#c9c9c9" width="80%"
-                  _onClick={unjoinClick}
+                  _onClick={() =>{
+                    unjoinClick();
+                    setJoinCount(joinCount-1);
+                  }}
                 >
                   참여 취소
                 </Button>:

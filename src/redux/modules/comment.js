@@ -48,17 +48,15 @@ const addCommentDB = (moim_id, comment) => {
       }
     })
     .then((res) => {
-      console.log(res.data)
       dispatch(addComment({
           commentId: res.data.commentId,
           nickname: user.nickname, 
           comment: comment,
         }
       ));
-      console.log("댓글추가성공");
     })
     .catch((err) => {
-      console.log("댓글추가실패");
+      console.log("댓글추가실패", err);
     })
   }
 }
@@ -93,8 +91,6 @@ const deleteCommentDB = (comment_id) => {
       },
     })
     .then((res) => {
-      console.log("삭제성공");
-
       const _comment = getState().comment.list;
 
       const comment_idx = _comment.findIndex((c) => {
@@ -132,7 +128,6 @@ export default handleActions({
     })
 
     draft.list[idx] = {...draft.list[idx], comment: action.payload.comment};
-    console.log(idx, action.payload.comment)
   }),
   [DELETE_COMMENT]: (state, action) => produce(state, (draft) => {
     const new_comment_list = draft.list.filter((c, i) => {

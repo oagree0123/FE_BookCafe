@@ -66,7 +66,6 @@ const loginDB = (username, password) => {
       return token_res
     })
     .then((token_res) =>{
-      console.log("넘어온토큰", token_res)
       axios({ 
         method: "post", 
         url: "http://yuseon.shop/islogin", 

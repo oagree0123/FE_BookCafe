@@ -11,6 +11,7 @@ const Header = (props) => {
   const dispatch = useDispatch();
 
   const is_login = useSelector(state => state.user.isLogin);
+  const user = useSelector(state => state.user.userInfo)
 
   return (
     <HeaderWrap>
@@ -49,8 +50,19 @@ const Header = (props) => {
         </ButtonWrap> :
 
         <ButtonWrap>
+           <Button 
+            margin="0px 10px 0px 0px"
+            text-size="16px" 
+            width="120px"
+            _onClick={() => {
+              history.replace(`/user/${user.nickname}`)
+            }}
+          >
+            마이 페이지
+          </Button>
           <Button 
             text-size="16px" 
+            width="120px"
             _onClick={() => {
               dispatch(userActions.logOut());
               history.replace('/')

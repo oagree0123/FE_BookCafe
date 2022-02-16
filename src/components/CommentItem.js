@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -10,11 +10,17 @@ const CommentItem = (props) => {
 
   const user = useSelector(state => state.user.userInfo);
 
+  const [is_first, setIsFirst] = useState(true);
   const [is_edit, setIsEdit] = useState(false);
-  const [editValue, setEditValue] = useState(props.comment ? props.comment : "");
+  const [editValue, setEditValue] = useState("");
 
   const edComment = () => {
+    if(!editValue) {
+      window.alert("댓글을 입력해주세요!");
+      return;
+    }
     dispatch(commentActions.editCommentDB(props.commentId, editValue));
+    setEditValue("");
     setIsEdit(false);
   }
 
@@ -32,7 +38,7 @@ const CommentItem = (props) => {
       window.alert("본인이 작성한 댓글이 아닙니다.")
       return;
     }
-
+    setIsFirst(false);
     setIsEdit(true);
   }
 

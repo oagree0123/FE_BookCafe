@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route } from 'react-router-dom';
 import { history } from '../redux/configStore';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '../elements';
 import PostList from '../pages/PostList';

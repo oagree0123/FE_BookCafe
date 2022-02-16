@@ -20,6 +20,10 @@ const DELETE_POST = "DELETE_POST";
 const JOIN_MOIM = "JOIN_MOIM";
 const UNJOIN_MOIM = "UNJOIN_MOIM";
 
+const GET_USERPOST = "GET_USERPOST"
+const ADD_USERPOST = "ADD_USERPOST"
+const DELETE_USERPOST = "DELETE_USERPOST";
+
 // action creators
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const addPost = createAction(ADD_POST, (post_data) => ({ post_data }));
@@ -29,9 +33,14 @@ const deletePost = createAction(DELETE_POST, (post_index) => ({ post_index }));
 const joinMoim = createAction(JOIN_MOIM, (post_id, nickname) => ({ post_id, nickname }));
 const unjoinMoim = createAction(UNJOIN_MOIM, (post_id, nickname) => ({ post_id, nickname }));
 
+const getUserPost = createAction(GET_USERPOST, (mypost_list) => ({ mypost_list }));
+const addUserPost = createAction(ADD_USERPOST, (mypost_data) => ({ mypost_data }));
+const deleteUserPost = createAction(DELETE_USERPOST, (mypost_idX) => ({ mypost_idX }));
+
 // initialState
 const initialState = {
   list: [],
+  mylist: [],
 };
 
 const initialPost = {
@@ -70,19 +79,13 @@ const addPostDB = (moims_data) => {
     const storageRef = ref(storage, `images/moims_${new Date().getTime()}`);
     const _upload = uploadString(storageRef, _image, 'data_url');
 
-    _upload.then((snapshot) => {
-      console.log(snapshot);
-      
+    _upload.then((snapshot) => { 
       getDownloadURL(snapshot.ref)
       .then((url) => {
-        console.log(url);
-        
+
         return url;
       }).then(async(url) => {
-        console.log(url);
-
         const _moims_data =  {imageUrl: url, ...moims_data}
-        console.log(_moims_data);
 
         axios.post(`http://yuseon.shop/moims`, {..._moims_data}, 
         {
@@ -91,8 +94,6 @@ const addPostDB = (moims_data) => {
           },
         })
         .then((res) => {
-          console.log(res.data);
-          /* dispatch(addPost({id: res.data.id, moimId: res.data.id, ..._moims_data})) */
           dispatch(addPost({moimId: res.data.moimId, ..._moims_data}))
 
           dispatch(imageActions.setPreview(null));
@@ -115,7 +116,7 @@ const editPostDB = (post_id=null, post={}) => {
   const token = sessionStorage.getItem('token');
   return function (dispatch, getState, {history}) {
     if(!post_id) {
-      console.log("게시물 정보가 없어요!");
+      window.alert("게시물 정보가 없어요!");
       return;
     }
 
@@ -146,7 +147,6 @@ const editPostDB = (post_id=null, post={}) => {
           return url;
         }).then(async(url) => {
           let new_post = {...post, imageUrl: url}
-          console.log(new_post);
 
           axios.put(`http://yuseon.shop/moims/${post_id}`, {...new_post}, {
             headers: {
@@ -154,14 +154,15 @@ const editPostDB = (post_id=null, post={}) => {
             },
           })
           .then((res) => {
-            console.log(res.data);
             dispatch(editdPost(post_id, {moimId: parseInt(post_id), ...post}));
             history.replace('/')
           }).catch((err) => {
+            window.alert("포스트 수정 실패");
             console.log("포스트 수정 실패", err);
           });
-
+          
         }).catch((err) => {
+          window.alert("이미지 업로드 실패");
           console.log("이미지 업로드 실패", err);
         })
       })
@@ -175,13 +176,11 @@ const deletePostDB = (post_id) => {
   const token = sessionStorage.getItem('token');
   return function(dispatch, getState, {history}) {
     if(!post_id) {
-      console.log("게시물 정보가 없어요!");
+      window.alert("게시물 정보가 없어요!");
       return;
     }
     const user = getState().user.userInfo;
     const _post = getState().post.list;
-
-    console.log(post_id, user.nickname)
 
     /* axios.delete(`http://yuseon.shop/moims/${post_id}`,{
       moimId: post_id,
@@ -255,7 +254,6 @@ const joinMoimDB = (moimId, nickname) => {
 const unjoinMoimDB = (moimId, nickname) => {
   const token = sessionStorage.getItem('token');
   return function (dispatch, getState, {history}) {
-    console.log(moimId, nickname)
     axios({ 
       method: "delete", 
       url: "http://yuseon.shop/moims/join", 
@@ -270,9 +268,39 @@ const unjoinMoimDB = (moimId, nickname) => {
     })
     .then((res) => {
       dispatch(unjoinMoim(moimId, nickname));
+
+      const _mypost = getState().post.mylist;
+
+      const mypost_index = _mypost.findIndex((v) => {
+        /* return parseInt(v.id) === parseInt(post_id); */
+        return parseInt(v.moimId) === parseInt(moimId);
+      });
+
+      dispatch(deleteUserPost(mypost_index));
     })
     .catch((err) => {
       console.log("참여를 취소할 수 없습니다.", err)
+    })
+  }
+}
+
+const getUserPostDB = (nickname) => {
+  return function (dispatch, getState, {history}) {
+    const token = sessionStorage.getItem('token');
+    
+    let nick = encodeURI(nickname);
+ 
+    axios
+    .get(`http://yuseon.shop/moims/user/${nick}`, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    }) 
+    .then((res) => {
+      dispatch(getUserPost(res.data));
+    })
+    .catch((err) => {
+      console.log(err.response)
     })
   }
 }
@@ -320,6 +348,28 @@ export default handleActions({
 
     draft.list[idx] = {...draft.list[idx], moimMembers: filterMembers}
   }),
+  [GET_USERPOST]: (state, action) => produce(state, (draft) => {
+    draft.mylist.push(...action.payload.mypost_list);
+
+    draft.mylist = draft.mylist.reduce((acc, cur) => {
+      if(acc.findIndex(a => a.moimId === cur.moimId) === -1) {
+        return [...acc, cur];
+      } else {
+        acc[acc.findIndex(a => a.moimId === cur.moimId)] = cur;
+        return acc;
+      }
+    }, []);
+  }),
+  [ADD_USERPOST]: (state, action) => produce(state, (draft) => {
+
+  }),
+  [DELETE_USERPOST]: (state, action) => produce(state, (draft) => {
+    const new_mypost_list = draft.mylist.filter((p, i) => {
+      return parseInt(action.payload.mypost_idX) !== i
+    })
+
+    draft.mylist = new_mypost_list;
+  }),
 }, initialState);
 
 const actionCreators = {
@@ -332,6 +382,7 @@ const actionCreators = {
   deletePostDB,
   joinMoimDB,
   unjoinMoimDB,
+  getUserPostDB,
 }
 
 export { actionCreators };

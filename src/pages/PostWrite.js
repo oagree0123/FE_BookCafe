@@ -143,11 +143,9 @@ const PostWrite = (props) => {
             let addDate = e.target.value
             let new_Date = moment().add(`${addDate}`,"d").format("YYYY-MM-DD")
             setDeadline(new_Date);
-            console.log(moment().add(`${addDate}`,"d").format("YYYY-MM-DD")); 
           }} />
           <WriteSelect _onChange={(e) => {
             setPersonCnt(e.target.value);
-            console.log(e.target.value);
           }} />
         </SelectWrap>
         <WriteInput

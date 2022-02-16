@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { Grid, Button } from '../elements';
+import { Button } from '../elements';
 import Post from '../components/Post';
 import { actionCreators as postActions } from '../redux/modules/post';
 import Permit from '../shared/Permit';

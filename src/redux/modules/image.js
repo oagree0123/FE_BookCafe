@@ -25,12 +25,9 @@ const uploadImageFB = (image) => {
     const _upload = ref(storage, `images/${image.name}`);
 
     uploadBytes(_upload, image).then((snapshot) => {
-      console.log(snapshot);
-
       getDownloadURL(_upload)
       .then((url) => {
         dispatch(uploadImage(url));
-        console.log(url);
       })
     });
   }
