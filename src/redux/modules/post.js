@@ -154,7 +154,7 @@ const editPostDB = (post_id=null, post={}) => {
             },
           })
           .then((res) => {
-
+            console.log(res.data);
             dispatch(editdPost(post_id, {moimId: parseInt(post_id), ...post}));
             history.replace('/')
           }).catch((err) => {
@@ -183,13 +183,25 @@ const deletePostDB = (post_id) => {
 
     console.log(post_id, user.nickname)
 
-    axios.delete(`http://yuseon.shop/moims/${post_id}`,{
+    /* axios.delete(`http://yuseon.shop/moims/${post_id}`,{
       moimId: post_id,
       nickname: user.nickname,
     }, {
       headers: {
         Authorization: `${token}`,
       },
+    }) */
+    axios({ 
+      method: "delete", 
+      url: `http://yuseon.shop/moims/${post_id}`, 
+      data: {
+        moimId: post_id,
+        nickname: user.nickname,
+      },
+      headers: {
+        "accept": "application/json", 
+        "Authorization": `${token}`, 
+      }, 
     })
     .then((res) => {
       const post_index = _post.findIndex((v) => {
@@ -244,15 +256,6 @@ const unjoinMoimDB = (moimId, nickname) => {
   const token = sessionStorage.getItem('token');
   return function (dispatch, getState, {history}) {
     console.log(moimId, nickname)
-    /* axios
-    .delete(`http://yuseon.shop/moims/join`, {
-      moimId: moimId,
-      nickname: nickname
-    }, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    }) */
     axios({ 
       method: "delete", 
       url: "http://yuseon.shop/moims/join", 
@@ -311,9 +314,11 @@ export default handleActions({
   [UNJOIN_MOIM]: (state, action) => produce(state, (draft) => {
     let idx = draft.list.findIndex((p) => parseInt(p.moimId) === parseInt(action.payload.post_id));
 
-    draft.list[idx].moimMembers.filter(m => {
-      return m === action.payload.nickname;
+    let filterMembers = draft.list[idx].moimMembers.filter(m => {
+      return m !== action.payload.nickname;
     });
+
+    draft.list[idx] = {...draft.list[idx], moimMembers: filterMembers}
   }),
 }, initialState);
 

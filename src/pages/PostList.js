@@ -21,7 +21,7 @@ const PostList = (props) => {
 
   return (
     <>
-      <Box>BOOKCAFE</Box>
+      <Box>책을 읽는 사람들의 모임</Box>
       <PostListWrap>
         {post_list.map((p, idx) => {
           return (
@@ -50,10 +50,12 @@ const Box = styled.div`
   align-items: center;
   width: 100%;
   height: 240px;
-  background-color: skyblue;
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://firebasestorage.googleapis.com/v0/b/bookcafe-stora.appspot.com/o/images%2Fmoims_1644988030271?alt=media&token=a8421298-df85-491f-936c-1885f38e4fa5");
+  background-color: rgba(0, 0, 0, 0.1);
   margin-bottom: 48px;
+  color: #fff;
   font-size: 48px;
-  font-weight: 800;
+  font-weight: 400;
 `
 
 const PostListWrap = styled.div`

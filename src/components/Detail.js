@@ -40,14 +40,18 @@ const Detail = (props) => {
     dispatch(postActions.unjoinMoimDB(props.moimId, user_info.nickname));
   }
 
-  /* useEffect(() => {
+  useEffect(() => {
     if(props.moimMembers.length === parseInt(props.personCnt)){
       setEndJoin(true);
     }
     else {
       setEndJoin(false);
     }
-  }, [endJoin]) */
+
+    if(props.moimMembers.length === parseInt(props.personCnt)){
+    }
+
+  }, [endJoin])
 
   return (
     <>
@@ -55,27 +59,32 @@ const Detail = (props) => {
         <PostContentWrap>
           <TitleWrap>
             <Text size="30px" bold>{props.title}</Text>
-            <TitleBtnWrap>
-              <Button 
-                bg="#fff" 
-                fcolor="#000"
-                _onClick={() => {
-                  history.push(`/write/${props.moimId}`);
-                }}
-              >
-                수정
-              </Button>
-              <Button 
-                bg="#fff" 
-                fcolor="#000"
-                _onClick={()=>{
-                  dispatch(postActions.deletePostDB(props.moimId));
-                }}
-              >
-                삭제
-              </Button>
-            </TitleBtnWrap>
+            {(props.nickname === user_info.nickname) ?
+              <TitleBtnWrap>
+                <Button 
+                  bg="#fff" 
+                  fcolor="#000"
+                  margin="0px 10px 0px 0px"
+                  _onClick={() => {
+                    history.push(`/write/${props.moimId}`);
+                  }}
+                >
+                  수정
+                </Button>
+                <Button 
+                  bg="#fff" 
+                  fcolor="#000"
+                  _onClick={()=>{
+                    dispatch(postActions.deletePostDB(props.moimId));
+                  }}
+                >
+                  삭제
+                </Button>
+              </TitleBtnWrap>:
+              null
+            }
           </TitleWrap>
+
           <BookContentWrap>
             <Text>{props.bookContents}</Text>
           </BookContentWrap>
@@ -97,13 +106,26 @@ const Detail = (props) => {
           </BIWrapTop>
           <BIWrapMid>
             <Text>
-              모집인원 : {props.moimMembers.length ? props.moimMembers.length : 0} / {props.personCnt}
+              모집인원 : {
+              props.moimMembers.length ? 
+              props.moimMembers.length : 0} / {props.personCnt}
             </Text>
           </BIWrapMid>
           <BIWrapBottom>
-            <Text size="22px" bold>D-{deadline}</Text>
+            <Text size="22px" bold>
+              D-{deadline <= 0 ? 0 : deadline}
+            </Text>
             {
-              (endJoin) ?
+              deadline <= 0 ?
+              <Button 
+                bg="#c9c9c9" width="80%"
+                _onClick={() => {
+                  window.alert("모집 기간이 아닙니다!")
+                }}
+              >
+                기간 마감
+              </Button> :
+              (endJoin) && ( !props.moimMembers.includes(user_info?.nickname)) ?
               <Button 
                 bg="#c9c9c9" width="80%"
                 _onClick={() => {

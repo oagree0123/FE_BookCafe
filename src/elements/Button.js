@@ -45,14 +45,16 @@ Button.defaultProps = {
 
 const ElButton = styled.button`
   width: ${(props) => props.width};
-  ${(props) => (props.fcolor? `color: ${props.color};` : 'color: #fff;')};
-  ${(props) => (props.bg? `background-color: ${props.bg};` : 'background-color: #212121;')};
+  ${(props) => (props.fcolor? `color: ${props.color};` : 'color: #000;')};
+  ${(props) => (props.bg? `background-color: ${props.bg};` : 'background-color: #fff;')};
   cursor: pointer;
   padding: ${(props) => props.padding};
   box-sizing: border-box;
-  border: none;
+  border: 1px solid #c9c9c9;
   ${(props) => (props.margin? `margin: ${props.margin};` : '')};
   cursor: pointer;
+  border-radius: 20px;
+  box-shadow: 2px 2px 5px #c9c9c9;
 `;
 
 const FloatButton = styled.button`
@@ -70,6 +72,7 @@ const FloatButton = styled.button`
   text-align: center;
   vertical-align: middle;
   box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const FbtnText = styled.p`

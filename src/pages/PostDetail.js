@@ -7,6 +7,7 @@ import { actionCreators as commentActions } from '../redux/modules/comment';
 import Detail from '../components/Detail';
 import CommentList from '../components/CommentList';
 import CommentWrite from '../components/CommentWrite';
+import Permit from '../shared/Permit';
 
 const PostDetail = (props) => {
   const dispatch = useDispatch();

@@ -18,6 +18,10 @@ return Nickreg.test(user_name);
     return pwdreg.test(pwd_check);
   };
   
+  export const titleCheck = (title) => {
+    let titlereg = /^.{1,10}$/ ;
+    return titlereg.test(title);
+  };
 // // 아이디 체크 함수
 
 //   export const emailCheck = (email) => {

@@ -21,7 +21,7 @@ const Post = (props) => {
       </Text> */}
       <ContentWrap>
         <BookEpllipsis>{props.bookTitle}</BookEpllipsis>
-        <Text size="11px" margin="0px 0px 2px 0px" color="#828282">{props.nickname}</Text>
+        <Text size="11px" margin="0px 0px 2px 0px" color="#828282">{props.nickname}님의 모임</Text>
         <TitleEpllipsis>{props.title}</TitleEpllipsis>
         <TextEpllipsis>{props.contents}</TextEpllipsis>
       </ContentWrap>
@@ -40,6 +40,7 @@ const PostWrap = styled.div`
   align-items: flex-start;
   border: 1px solid #ddd;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const ImageWrap = styled.div` 

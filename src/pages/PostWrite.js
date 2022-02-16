@@ -10,6 +10,8 @@ import Upload from '../shared/Upload';
 import { actionCreators as postActions } from '../redux/modules/post';
 import { actionCreators as imageActions } from '../redux/modules/image';
 
+import {titleCheck} from '../shared/common';
+
 import jwt_decode from "jwt-decode";
 
 const PostWrite = (props) => {
@@ -37,7 +39,13 @@ const PostWrite = (props) => {
   const [person_cnt, setPersonCnt] = useState(1);
   const [deadline, setDeadline] = useState(moment().add('7',"d").format("YYYY-MM-DD"));
 
+
   const writePost = () => {
+    if(!titleCheck(moim_name)) {
+      window.alert("모임이름은 10글자 이하로 작성해주세요!");
+      return;
+    }
+
     const moims_data = {
       title: moim_name,
       contents: content,
@@ -87,7 +95,9 @@ const PostWrite = (props) => {
       <Grid margin="0px 0px 44px 0px">
         <Text margin="0px 0px 24px 0px" size="22px" bold>모임 이름</Text>
         <WriteInput
-          _onChange={(e) => setMoimName(e.target.value)}
+          _onChange={(e) => {
+            setMoimName(e.target.value)
+          }}
           placeholder="모임 이름을 입력해주세요!"
           width="30%" 
           value={moim_name}

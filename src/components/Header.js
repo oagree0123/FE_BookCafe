@@ -15,6 +15,7 @@ const Header = (props) => {
   return (
     <HeaderWrap>
       <Text 
+        is_cursor
         _onClick={() => {
           history.replace('/');
         }}
@@ -27,7 +28,9 @@ const Header = (props) => {
       {!is_login ? 
         <ButtonWrap>
           <Button 
+            margin="0px 10px 0px 0px"
             text-size="16px" 
+            width="100px"
             _onClick={() => {
               history.replace('/login')
             }}
@@ -36,6 +39,7 @@ const Header = (props) => {
           </Button>
           <Button 
             text-size="16px"
+            width="100px"
             _onClick={() => {
               history.replace('/signup')
             }} 

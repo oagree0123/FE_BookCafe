@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Input, Button, WriteInput } from '../elements';
@@ -10,7 +10,18 @@ const CommentWrite = (props) => {
 
   const [comment, setComment] = useState("");
 
+  const is_login = useSelector(state => state.user.isLogin);
+
   const writeComment = () => {
+    if(!is_login) {
+      window.alert("로그인 후 이용 가능합니다!")
+      return
+    }
+    
+    if(!comment){
+      window.alert("댓글을 입력해주세요!")
+      return;
+    }
     dispatch(commentActions.addCommentDB(props.post_id, comment));
   }
 
@@ -26,7 +37,10 @@ const CommentWrite = (props) => {
         />
         <Button 
           width="80px"
-          _onClick={writeComment}
+          _onClick={() => {
+            writeComment();
+            setComment("");
+          }}
         >
           작성
         </Button>
