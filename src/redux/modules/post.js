@@ -220,9 +220,9 @@ const deletePostDB = (post_id) => {
 
 const getPostOneDB = (post_id) => {
   return function(dispatch, getState, {history}) {
-    axios.get(`http://yuseon.shop/moims/${post_id}`)
+    axios
+    .get(`http://yuseon.shop/moims/${post_id}`)
     .then((res) => {
-      console.log(res.data);
       dispatch(getPost([res.data]));
     })
     .catch((err) => {

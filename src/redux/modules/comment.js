@@ -21,7 +21,6 @@ const getCommentDB = (moim_id) => {
     axios
     .get(`http://yuseon.shop/comments/${moim_id}`)
     .then((res) => {
-      console.log(res.data);
       dispatch(getComment(res.data));
       /* dispatch(getComment(res.data)); */
     })

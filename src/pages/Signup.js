@@ -2,6 +2,7 @@ import React, { useDebugValue, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import UserInput from '../components/UserInput';
+import axios from 'axios';
 
 import { Text, Button, } from '../elements';
 import { actionCreators as userActions } from '../redux/modules/user';
@@ -44,12 +45,12 @@ const Signup = (props) => {
     <SignupWrap>
       <Text margin="0px 0px 48px 0px" size="48px" bold>회원가입</Text>
       <ContentWrap>
-        <Text margin="0px 0px 8px 0px">아이디</Text>
+        <Text margin="0px 0px 8px 0px">이메일</Text>
         <UserInput 
           _onChange={(e) => {
             setId(e.target.value);
           }}
-          placeholder="아이디를 입력해주세요!" 
+          placeholder="이메일을 입력해주세요!" 
           margin="0px 0px 24px 0px"
           value={id} 
         />

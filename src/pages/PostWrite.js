@@ -66,7 +66,7 @@ const PostWrite = (props) => {
     const moims_data = {
       title: moim_name,
       contents: content,
-      nickname: "닉네임",
+      nickname: user.nickname,
       personCnt: person_cnt,
       bookTitle: book_name,
       bookContents: book_content,

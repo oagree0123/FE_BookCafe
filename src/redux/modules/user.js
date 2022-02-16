@@ -38,7 +38,6 @@ const loginCheckDB = () => {
       }, 
     })
     .then((res) => {
-      console.log(res);
       dispatch(setUser(
         {
           username: res.data.username,
@@ -78,7 +77,6 @@ const loginDB = (username, password) => {
         }, 
       })
       .then((res) => {
-        console.log(res);
         dispatch(setUser(
           {
             username: res.data.username,
@@ -91,13 +89,16 @@ const loginDB = (username, password) => {
       })
       history.replace('/')
     })
+    .catch((err) => {
+      window.alert("이메일이나 패스워드를 다시 확인해주세요!")
+    })
   };
 };
 
 const signUpDB = (id, pwd, user_name) => {
   return function (dispatch, getState, {history}){
-    axios
     /* .post('http://yuseon.shop/user/signup',{ */
+    axios
     .post('http://yuseon.shop/user/signup',{
       "username": id,
       "nickname": user_name ,
@@ -107,8 +108,8 @@ const signUpDB = (id, pwd, user_name) => {
       window.alert("회원가입이 완료되었습니다!");
       history.replace('/');
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      window.alert(err.response.data.errorMessage);
     })
   }
 }
