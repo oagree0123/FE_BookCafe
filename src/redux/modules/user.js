@@ -28,7 +28,7 @@ const initialState = {
 const loginCheckDB = () => {
   const token = sessionStorage.getItem("token");
   return function (dispatch, getState, {history}) {
-    axios({ 
+    /* axios({ 
       method: "post", 
       url: "http://yuseon.shop/islogin", 
       headers: { 
@@ -36,6 +36,13 @@ const loginCheckDB = () => {
         "accept": "application/json", 
         "Authorization": `${token}`, 
       }, 
+    }) */
+    axios.post("http://yuseon.shop/islogin", {}, {
+      headers: { 
+        "content-type": "applicaton/json;charset=UTF-8", 
+        "accept": "application/json", 
+        "Authorization": `${token}`, 
+      },
     })
     .then((res) => {
       dispatch(setUser(
@@ -70,8 +77,8 @@ const loginDB = (username, password) => {
         method: "post", 
         url: "http://yuseon.shop/islogin", 
         headers: { 
-          "content-type": "applicaton/json;charset=UTF-8", 
-          "accept": "application/json", 
+          /* "content-type": "applicaton/json;charset=UTF-8", 
+          "accept": "application/json",  */
           "Authorization": `${token_res}`, 
         }, 
       })

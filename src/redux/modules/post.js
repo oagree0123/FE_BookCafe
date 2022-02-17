@@ -209,7 +209,7 @@ const deletePostDB = (post_id) => {
       });
   
       dispatch(deletePost(post_index));
-      history.replace('/');
+      window.location.reload();
     })
     .catch((err) => {
       console.log("포스트 삭제 실패", err);
